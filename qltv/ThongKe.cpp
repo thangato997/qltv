@@ -12,7 +12,7 @@
  * @return void
  */
 void thong_ke_so_luong_sach() {
-	printf("\n--> Tong so sach trong thu vien: %d quyen.\n", so_luong_sach);
+	printf("\n--> So luong sach khac nhau trong thu vien: %d quyen.\n", so_luong_sach);
 }
 
 /**

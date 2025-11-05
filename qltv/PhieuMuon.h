@@ -24,6 +24,7 @@ void lap_phieu_muon();
 void lap_phieu_tra();
 long int tinh_so_ngay_tre_han(const char* date_str1, const char* date_str2);
 void tinh_ngay_het_han(const char* ngay_lap, char* ngay_het_han, size_t buffer_size);
+void xem_danh_sach_phieu_muon();
 
 #endif // PHIEUMUON_H
 

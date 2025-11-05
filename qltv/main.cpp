@@ -29,7 +29,7 @@ int main() {
                 menu_sach();
                 break;
             case 3:
-                lap_phieu_muon(); 
+                menu_phieu_muon();
                 break;
             case 4:
                 lap_phieu_tra(); 

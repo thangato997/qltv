@@ -83,6 +83,29 @@ void menu_sach() {
 	} while (lua_chon != '0');
 }
 
+// Menu cho Phieu Muon (Chức năng3.)
+void menu_phieu_muon() {
+	char lua_chon;
+	do {
+		printf("\n\n=========== PHIEU MUON (3.) ===========\n");
+		printf("a. Lap phieu muon\n");
+		printf("b. Xem danh sach phieu muon\n");
+		printf("0. Quay lai Menu chinh\n");
+		printf("======================================\n");
+		printf("Nhap lua chon cua ban: ");
+
+		scanf_s(" %c", &lua_chon, 1);
+		while (getchar() != '\n');
+
+		switch (lua_chon) {
+		case 'a': lap_phieu_muon(); break;
+		case 'b': xem_danh_sach_phieu_muon(); break;
+		case '0': printf("\n--> Quay lai Menu chinh...\n"); break;
+		default: printf("\nLua chon khong hop le. Vui long chon lai!\n");
+		}
+	} while (lua_chon != '0');
+}
+
 // Menu Thống kê (Chức năng 5.)
 void menu_thong_ke() {
 	char lua_chon;

@@ -228,7 +228,7 @@ void chinh_sua_doc_gia() {
 		printf("0. Huy bo (Huy tat ca cap nhat)\n");
 		printf("Nhap lua chon (hoac 'S' de luu): ");
 
-		if (scanf_s(" %7s", choice, (unsigned)sizeof(choice)) !=1) {
+		if (scanf_s(" %7s", choice, (unsigned)sizeof(choice)) != 1) {
 			while (getchar() != '\n'); // Xóa bộ đệm nếu nhập sai
 			printf("Lua chon khong hop le.\n");
 			continue;
@@ -316,9 +316,11 @@ void chinh_sua_doc_gia() {
 		strcpy_s(ngay_lap_the_arr[index], sizeof(ngay_lap_the_arr[index]), tmp_ngay_lap);
 		strcpy_s(ngay_het_han_arr[index], sizeof(ngay_het_han_arr[index]), tmp_ngay_het);
 		printf("\nDa cap nhat thong tin cho doc gia co CMND: %s\n", cmnd_can_sua);
-	} else if (cancelled) {
+	}
+	else if (cancelled) {
 		printf("\nDa huy bo cac thay doi cho doc gia co CMND: %s\n", cmnd_can_sua);
-	} else {
+	}
+	else {
 		// Truong hop thoat vong lap ma khong luu va khong huy (khong the xay ra vi logic), thong bao
 		printf("\nKhong co thay doi nao duoc luu cho doc gia co CMND: %s\n", cmnd_can_sua);
 	}
@@ -326,7 +328,7 @@ void chinh_sua_doc_gia() {
 
 /**
  * @brief Xóa thông tin một độc giả (Chức năng 1d).
- * 
+ *
  * @param None
  * @return void
  */

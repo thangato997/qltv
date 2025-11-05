@@ -139,26 +139,48 @@ void lap_phieu_muon() {
 			else break;
 		} while (true);
 
-		// Nhập danh sách sách mượn
-		printf("Nhap cac ISBN sach muon (Nhap '0' de ket thuc):\n");
-		while (so_sach_muon < MAX_SACH_MUON) {
-			printf("ISBN %d: ", so_sach_muon + 1);
-			if (scanf_s("%14s", isbn_temp, (unsigned)sizeof(isbn_temp)) != 1) {
+		// Nhập danh sách sách mượn: chọn số lượng trước, sau đó nhập ISBN theo số lượng
+		int num_to_borrow = 0;
+		do {
+			printf("Nhap so luong sach muon (1-%d): ", MAX_SACH_MUON);
+			if (scanf_s("%d", &num_to_borrow) != 1) {
 				while (getchar() != '\n');
 				printf("Nhap khong hop le. Vui long nhap lai.\n");
 				continue;
 			}
 			while (getchar() != '\n');
-			if (strcmp(isbn_temp, "0") == 0) break;
+			if (num_to_borrow <1 || num_to_borrow > MAX_SACH_MUON) {
+				printf("So luong phai tu1 den %d. Vui long nhap lai.\n", MAX_SACH_MUON);
+			}
+			else break;
+		} while (true);
+
+		for (int j = 0; j < num_to_borrow; j++) {
+			printf("ISBN %d: ", j + 1);
+			if (scanf_s("%14s", isbn_temp, (unsigned)sizeof(isbn_temp)) != 1) {
+				while (getchar() != '\n');
+				printf("Nhap khong hop le. Vui long nhap lai.\n");
+				j--; // retry this position
+				continue;
+			}
+			while (getchar() != '\n');
+
+			if (strcmp(isbn_temp, "0") == 0) {
+				printf("Khong duoc nhap '0' khi da chon so luong. Vui long nhap lai.\n");
+				j--; // retry
+				continue;
+			}
 
 			int vi_tri_sach = tim_vi_tri_sach(isbn_temp);
 			if (vi_tri_sach == -1) {
 				printf("Sach voi ISBN %s khong ton tai. Vui long nhap lai.\n", isbn_temp);
+				j--; // retry
 				continue;
 			}
 
 			if (so_quyen_arr[vi_tri_sach] <= 0) {
-				printf("Sach '%s' hien da het. Khong the muon.\n", ten_sach_arr[vi_tri_sach]);
+				printf("Sach '%s' hien da het. Khong the muon. Vui long chon sach khac.\n", ten_sach_arr[vi_tri_sach]);
+				j--; // retry
 				continue;
 			}
 
@@ -270,4 +292,33 @@ void lap_phieu_tra() {
 	}
 
 	printf("Da hoan tat qua trinh tra sach va cap nhat so luong trong kho.\n");
+}
+
+void xem_danh_sach_phieu_muon() {
+	printf("\n--- DANH SACH PHIEU MUON ---\n");
+	if (so_luong_phieu == 0) {
+		printf("Hien khong co phieu muon nao.\n");
+		return;
+	}
+
+	printf("%-6s | %-6s | %-11s | %-11s | %-5s | %-11s | %-8s | %s\n",
+		"MaP", "MaDG", "NgayMuon", "NgayDuKien", "Tra?", "NgayTraTT", "SoSach", "ISBNs");
+	printf("-------------------------------------------------------------------------------------------------------------\n");
+
+	for (int i = 0; i < so_luong_phieu; i++) {
+		// Build ISBN list string
+		char isbns[MAX_SACH_MUON * 16] = "";
+		for (int j = 0; j < so_sach_muon_arr[i]; j++) {
+			if (j > 0) {
+				strcat_s(isbns, sizeof(isbns), ", ");
+			}
+			strcat_s(isbns, sizeof(isbns), isbn_sach_muon_arr[i][j]);
+		}
+
+		printf("%-6s | %-6s | %-11s | %-11s | %-5s | %-11s | %-8d | %s\n",
+			ma_phieu_arr[i], ma_doc_gia_phieu_arr[i], ngay_muon_arr[i], ngay_tra_du_kien_arr[i],
+			da_tra_arr[i] ? "Yes" : "No", ngay_tra_thuc_te_arr[i][0] ? ngay_tra_thuc_te_arr[i] : "-",
+			so_sach_muon_arr[i], isbns);
+	}
+	printf("-------------------------------------------------------------------------------------------------------------\n");
 }
