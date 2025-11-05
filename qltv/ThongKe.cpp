@@ -111,14 +111,7 @@ void thong_ke_so_sach_dang_muon() {
 
 	int tong_sach_dang_muon = 0;
 
-	// Giả sử PhieuMuon.cpp có biến/mảng `da_tra_arr` (0: Chưa trả, 1: Đã trả)
-	// và mảng `so_sach_muon_arr` (số lượng sách trong phiếu)
-
 	for (int i = 0; i < so_luong_phieu; i++) {
-		// Kiểm tra xem phiếu này đã được trả chưa
-		// Giả định: da_tra_arr được định nghĩa và cập nhật trong PhieuMuon.cpp
-		extern int da_tra_arr[MAX_PHIEU];
-
 		if (da_tra_arr[i] == 0) { // Nếu chưa trả
 			tong_sach_dang_muon += so_sach_muon_arr[i];
 		}
@@ -126,9 +119,6 @@ void thong_ke_so_sach_dang_muon() {
 
 	printf("--> Tong so sach hien dang duoc muon: %d quyen.\n", tong_sach_dang_muon);
 }
-
-// Khai báo lại hàm so_sanh_ngay từ PhieuMuon.cpp 
-extern int so_sanh_ngay(const char* date1, const char* date2);
 
 /**
  * @brief Thống kê danh sách độc giả bị trễ hạn (Chức năng 5f).
@@ -150,8 +140,6 @@ void thong_ke_doc_gia_tre_han() {
 
 	for (int i = 0; i < so_luong_phieu; i++) {
 		// Chỉ xét các phiếu chưa trả (da_tra_arr[i] == 0)
-		extern int da_tra_arr[MAX_PHIEU];
-
 		if (da_tra_arr[i] == 0) {
 			// So sánh Ngay Hien Tai với Ngay Tra Du Kien
 			if (so_sanh_ngay(ngay_hien_tai, ngay_tra_du_kien_arr[i]) > 0) {

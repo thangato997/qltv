@@ -18,11 +18,6 @@ char ma_doc_gia_phieu_arr[MAX_PHIEU][10] = {
  "DG002",
  "DG003"
 };
-char ma_sach_phieu_arr[MAX_PHIEU][10] = {
- "S001",
- "S002",
- "S003"
-};
 char ngay_muon_arr[MAX_PHIEU][11] = {
  "01/10/2025",
  "20/09/2025",
@@ -40,21 +35,57 @@ char ngay_tra_thuc_te_arr[MAX_PHIEU][11] = {
  "" // Chưa trả
 };
 int so_sach_muon_arr[MAX_PHIEU] = { 1,1,1 };
-char isbn_sach_muon_arr[MAX_PHIEU][MAX_SACH_MUON][15] = {
-	// Phiếu1 (PM001)
-	{ "978-1234567890", "", "", "", "" },
-	// Phiếu2 (PM002)
-	{ "978-0987654321", "", "", "", "" },
-	// Phiếu3 (PM003)
-	{ "978-1112131415", "", "", "", "" }
-};
+
+// Mảng 1 chiều thay vì mảng 3 chiều
+char isbn_sach_muon_arr[MAX_PHIEU * MAX_SACH_MUON * 15] = { 0 };
+int sach_bi_mat_arr[MAX_PHIEU * MAX_SACH_MUON] = { 0 }; // 0: Không mất, 1: Mất
 
 int so_luong_phieu = 3;
+
+/**
+ * @brief Hàm helper để lấy con trỏ tới ISBN trong mảng 1 chiều.
+ * @param phieu_idx Index của phiếu (0 -> MAX_PHIEU-1)
+ * @param sach_idx Index của sách trong phiếu (0 -> MAX_SACH_MUON-1)
+ * @return char*: Con trỏ tới ISBN string (15 ký tự)
+ */
+char* lay_isbn_phieu(int phieu_idx, int sach_idx) {
+	return &isbn_sach_muon_arr[(phieu_idx * MAX_SACH_MUON + sach_idx) * 15];
+}
+
+/**
+ * @brief Hàm helper để kiểm tra/set trạng thái sách bị mất.
+ * @param phieu_idx Index của phiếu
+ * @param sach_idx Index của sách trong phiếu
+ * @return int: Trạng thái mất (0 hoặc 1)
+ */
+int lay_trang_thai_mat(int phieu_idx, int sach_idx) {
+	return sach_bi_mat_arr[phieu_idx * MAX_SACH_MUON + sach_idx];
+}
+
+void dat_trang_thai_mat(int phieu_idx, int sach_idx, int trang_thai) {
+	sach_bi_mat_arr[phieu_idx * MAX_SACH_MUON + sach_idx] = trang_thai;
+}
+
+// Khởi tạo dữ liệu mẫu cho isbn_sach_muon_arr
+void khoi_tao_du_lieu_phieu_mau() {
+	static int da_khoi_tao = 0;
+	if (da_khoi_tao) return;
+	da_khoi_tao = 1;
+
+	// Phiếu 0 (PM001)
+	strcpy_s(lay_isbn_phieu(0, 0), 15, "978-1234567890");
+	// Phiếu 1 (PM002)
+	strcpy_s(lay_isbn_phieu(1, 0), 15, "978-0987654321");
+	// Phiếu 2 (PM003)
+	strcpy_s(lay_isbn_phieu(2, 0), 15, "978-1112131415");
+}
 
 /**
  * @brief Lập phiếu mượn sách (Chức năng3).
  */
 void lap_phieu_muon() {
+	khoi_tao_du_lieu_phieu_mau();
+
 	if (so_luong_phieu >= MAX_PHIEU) {
 		printf("He thong phieu muon da day.\n");
 		return;
@@ -184,7 +215,8 @@ void lap_phieu_muon() {
 				continue;
 			}
 
-			strcpy_s(isbn_sach_muon_arr[index_phieu][so_sach_muon], sizeof(isbn_sach_muon_arr[index_phieu][so_sach_muon]), isbn_temp);
+			strcpy_s(lay_isbn_phieu(index_phieu, so_sach_muon), 15, isbn_temp);
+			dat_trang_thai_mat(index_phieu, so_sach_muon, 0); // Khởi tạo: không mất
 			so_sach_muon++;
 
 			// Cập nhật số lượng sách
@@ -208,6 +240,8 @@ void lap_phieu_muon() {
 }
 
 void lap_phieu_tra() {
+	khoi_tao_du_lieu_phieu_mau();
+
 	char ma_phieu_temp[10] = { 0 };
 	printf("\n--- LAP PHIEU TRA SACH ---\n");
 	printf("Nhap Ma Phieu Muon can tra: ");
@@ -258,39 +292,93 @@ void lap_phieu_tra() {
 		break;
 	} while (true);
 
-	// B2: Xử lý trả sách
-	strcpy_s(ngay_tra_thuc_te_arr[index_phieu], sizeof(ngay_tra_thuc_te_arr[index_phieu]), ngay_tra_tt);
-	da_tra_arr[index_phieu] = 1;
-
-	printf("Da cap nhat phieu tra %s.\n", ma_phieu_temp);
-
-	// B3: Cập nhật số lượng sách và tính phạt
-	long tong_tien_phat = 0;
-	long so_ngay_tre = tinh_so_ngay_tre_han(ngay_tra_tt, ngay_tra_du_kien_arr[index_phieu]);
-
-	if (so_ngay_tre > 0) {
-		tong_tien_phat = so_ngay_tre * 2000 * so_sach_muon_arr[index_phieu]; //2000 VND/ngày/quyển
-		printf("TRE HAN: Ngay tra du kien la %s. Tre %ld ngay.\n", ngay_tra_du_kien_arr[index_phieu], so_ngay_tre);
-		printf("TONG TIEN PHAT: %ld VND.\n", tong_tien_phat);
-	}
-	else {
-		printf("SACH DUOC TRA DUNG HAN/SOM HAN. Khong co phat.\n");
-	}
-
-	// Tăng lại số lượng sách đã trả
+	// B2: Kiểm tra sách bị mất
+	printf("\n--- KIEM TRA SACH BI MAT ---\n");
 	for (int i = 0; i < so_sach_muon_arr[index_phieu]; i++) {
-		char* isbn_sach = isbn_sach_muon_arr[index_phieu][i];
+		char* isbn_sach = lay_isbn_phieu(index_phieu, i);
 		int vi_tri_sach = tim_vi_tri_sach(isbn_sach);
 
 		if (vi_tri_sach != -1) {
-			so_quyen_arr[vi_tri_sach]++;
+			printf("Sach %d: %s (%s)\n", i + 1, isbn_sach, ten_sach_arr[vi_tri_sach]);
+			printf("Sach nay co bi mat khong? (1=Co, 0=Khong): ");
+			int bi_mat = 0;
+			if (scanf_s("%d", &bi_mat) != 1) {
+				while (getchar() != '\n');
+				bi_mat = 0;
+			}
+			while (getchar() != '\n');
+			dat_trang_thai_mat(index_phieu, i, bi_mat ? 1 : 0);
 		}
 	}
 
-	printf("Da hoan tat qua trinh tra sach va cap nhat so luong trong kho.\n");
+	// B3: Xử lý trả sách
+	strcpy_s(ngay_tra_thuc_te_arr[index_phieu], sizeof(ngay_tra_thuc_te_arr[index_phieu]), ngay_tra_tt);
+	da_tra_arr[index_phieu] = 1;
+
+	printf("\nDa cap nhat phieu tra %s.\n", ma_phieu_temp);
+
+	// B4: Cập nhật số lượng sách và tính phạt
+	long tong_tien_phat = 0;
+	long so_ngay_tre = tinh_so_ngay_tre_han(ngay_tra_tt, ngay_tra_du_kien_arr[index_phieu]);
+
+	// Tính phạt trễ hạn (5000 VND/ngày theo đề bài)
+	if (so_ngay_tre > 0) {
+		long tien_phat_tre = so_ngay_tre * 5000 * so_sach_muon_arr[index_phieu];
+		tong_tien_phat += tien_phat_tre;
+		printf("TRE HAN: Ngay tra du kien la %s. Tre %ld ngay.\n", ngay_tra_du_kien_arr[index_phieu], so_ngay_tre);
+		printf("TIEN PHAT TRE HAN: %ld VND (5,000 VND/ngay x %ld ngay x %d sach).\n",
+			tien_phat_tre, so_ngay_tre, so_sach_muon_arr[index_phieu]);
+	}
+	else {
+		printf("SACH DUOC TRA DUNG HAN/SOM HAN.\n");
+	}
+
+	// Tính phạt sách mất (200% giá sách theo đề bài)
+	long tien_phat_mat = 0;
+	for (int i = 0; i < so_sach_muon_arr[index_phieu]; i++) {
+		if (lay_trang_thai_mat(index_phieu, i) == 1) {
+			char* isbn_sach = lay_isbn_phieu(index_phieu, i);
+			int vi_tri_sach = tim_vi_tri_sach(isbn_sach);
+
+			if (vi_tri_sach != -1) {
+				long phat_sach_nay = gia_sach_arr[vi_tri_sach] * 2; // 200%
+				tien_phat_mat += phat_sach_nay;
+				printf("SACH BI MAT: %s - Gia: %ld VND - Phat: %ld VND (200%%)\n",
+					ten_sach_arr[vi_tri_sach], gia_sach_arr[vi_tri_sach], phat_sach_nay);
+			}
+		}
+	}
+
+	if (tien_phat_mat > 0) {
+		tong_tien_phat += tien_phat_mat;
+		printf("TONG TIEN PHAT SACH MAT: %ld VND\n", tien_phat_mat);
+	}
+
+	if (tong_tien_phat > 0) {
+		printf("\n==> TONG TIEN PHAT: %ld VND\n", tong_tien_phat);
+	}
+	else {
+		printf("\n==> Khong co phat.\n");
+	}
+
+	// Tăng lại số lượng sách đã trả (chỉ những sách không bị mất)
+	for (int i = 0; i < so_sach_muon_arr[index_phieu]; i++) {
+		if (lay_trang_thai_mat(index_phieu, i) == 0) { // Không bị mất
+			char* isbn_sach = lay_isbn_phieu(index_phieu, i);
+			int vi_tri_sach = tim_vi_tri_sach(isbn_sach);
+
+			if (vi_tri_sach != -1) {
+				so_quyen_arr[vi_tri_sach]++;
+			}
+		}
+	}
+
+	printf("\nDa hoan tat qua trinh tra sach va cap nhat so luong trong kho.\n");
 }
 
 void xem_danh_sach_phieu_muon() {
+	khoi_tao_du_lieu_phieu_mau();
+
 	printf("\n--- DANH SACH PHIEU MUON ---\n");
 	if (so_luong_phieu == 0) {
 		printf("Hien khong co phieu muon nao.\n");
@@ -307,7 +395,7 @@ void xem_danh_sach_phieu_muon() {
 			if (j > 0) {
 				strcat_s(isbns, sizeof(isbns), ", ");
 			}
-			strcat_s(isbns, sizeof(isbns), isbn_sach_muon_arr[i][j]);
+			strcat_s(isbns, sizeof(isbns), lay_isbn_phieu(i, j));
 		}
 
 		printf("%-6s | %-6s | %-11s | %-11s | %-5s | %-11s | %-8d | %s\n",

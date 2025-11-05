@@ -7,7 +7,6 @@
 #include <ctype.h>
 
 // Định nghĩa các mảng1 chiều (biến toàn cục)
-// (Dữ liệu khởi tạo của bạn được giữ nguyên)
 char ma_doc_gia_arr[MAX_DOC_GIA][10] = {
  "DG001",
  "DG002",
