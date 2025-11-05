@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdlib> // Cho while(getchar() != '\n');
+#include <ctime>
 
 // Định nghĩa các mảng1 chiều (biến toàn cục)
 char isbn_arr[MAX_SACH][15] = {
@@ -71,7 +72,7 @@ int tim_vi_tri_sach(const char* isbn_can_tim) {
 }
 
 /**
- * @brief Xem danh sách các sách trong thư viện (Chức năng2a).
+ * @brief Xem danh sách các sách trong thư viện (Chức năng 2a).
  * @param None
  * @return void
  */
@@ -94,7 +95,7 @@ void xem_danh_sach_sach() {
 }
 
 /**
- * @brief Thêm sách mới vào hệ thống (Chức năng2b).
+ * @brief Thêm sách mới vào hệ thống (Chức năng 2b).
  * @param None
  * @return void
  */
@@ -154,28 +155,75 @@ void them_sach() {
 	scanf_s(" %49[^\n]", nxb_arr[i], (unsigned)sizeof(nxb_arr[i]));
 	while (getchar() != '\n');
 
-	printf("Nhap Nam Xuat Ban: ");
-	scanf_s("%d", &nam_xb_arr[i]);
-	while (getchar() != '\n');
+	// Validate Nam Xuat Ban
+	int year = 0;
+	int current_year;
+	current_year = lay_nam_hien_tai();
+	do {
+		printf("Nhap Nam Xuat Ban: ");
+		if (scanf_s("%d", &year) != 1) {
+			while (getchar() != '\n');
+			printf("Nhap khong hop le. Vui long nhap lai.\n");
+			continue;
+		}
+		while (getchar() != '\n');
+		if (year <1000 || year > current_year) {
+			printf("Nam xuat ban phai tu1000 den %d. Vui long nhap lai.\n", current_year);
+		}
+		else {
+			nam_xb_arr[i] = year;
+			break;
+		}
+	} while (true);
 
 	printf("Nhap The Loai: ");
 	scanf_s(" %49[^\n]", the_loai_arr[i], (unsigned)sizeof(the_loai_arr[i]));
 	while (getchar() != '\n');
 
-	printf("Nhap Gia Sach: ");
-	scanf_s("%ld", &gia_sach_arr[i]);
-	while (getchar() != '\n');
+	// Validate Gia Sach
+	long price = 0;
+	do {
+		printf("Nhap Gia Sach: ");
+		if (scanf_s("%ld", &price) != 1) {
+			while (getchar() != '\n');
+			printf("Nhap khong hop le. Vui long nhap lai.\n");
+			continue;
+		}
+		while (getchar() != '\n');
+		if (price < 0) {
+			printf("Gia sach phai lon hon hoac bang0. Vui long nhap lai.\n");
+		}
+		else {
+			gia_sach_arr[i] = price;
+			break;
+		}
+	} while (true);
 
 	printf("Nhap So Quyen: ");
-	scanf_s("%d", &so_quyen_arr[i]);
-	while (getchar() != '\n');
+	// Validate So Quyen (must be >=0)
+	int copies = 0;
+	do {
+		if (scanf_s("%d", &copies) != 1) {
+			while (getchar() != '\n');
+			printf("Nhap khong hop le. Vui long nhap lai.\n");
+			continue;
+		}
+		while (getchar() != '\n');
+		if (copies < 0) {
+			printf("So quyen phai la so nguyen khong am. Vui long nhap lai.\n");
+		}
+		else {
+			so_quyen_arr[i] = copies;
+			break;
+		}
+	} while (true);
 
 	so_luong_sach++;
 	printf("\nDa them sach %s thanh cong.\n", ten_sach_arr[i]);
 }
 
 /**
- * @brief Chỉnh sửa thông tin một quyển sách (Chức năng2c).
+ * @brief Chỉnh sửa thông tin một quyển sách (Chức năng 2c).
  * @param None
  * @return void
  */
@@ -229,25 +277,77 @@ void chinh_sua_sach() {
 		while (getchar() != '\n');
 		break;
 	case 4:
-		printf("Nhap Nam Xuat Ban moi: ");
-		scanf_s("%d", &nam_xb_arr[index]);
-		while (getchar() != '\n');
-		break;
+		// Validate Nam Xuat Ban khi chỉnh sửa
+	{
+		int year = 0;
+		int current_year;
+		current_year = lay_nam_hien_tai();
+		do {
+			printf("Nhap Nam Xuat Ban moi: ");
+			if (scanf_s("%d", &year) != 1) {
+				while (getchar() != '\n');
+				printf("Nhap khong hop le. Vui long nhap lai.\n");
+				continue;
+			}
+			while (getchar() != '\n');
+			if (year <1000 || year > current_year) {
+				printf("Nam xuat ban phai tu1000 den %d. Vui long nhap lai.\n", current_year);
+			}
+			else {
+				nam_xb_arr[index] = year;
+				break;
+			}
+		} while (true);
+	}
+	break;
 	case 5:
 		printf("Nhap The Loai moi: ");
 		scanf_s(" %49[^\n]", the_loai_arr[index], (unsigned)sizeof(the_loai_arr[index]));
 		while (getchar() != '\n');
 		break;
 	case 6:
-		printf("Nhap Gia Sach moi: ");
-		scanf_s("%ld", &gia_sach_arr[index]);
-		while (getchar() != '\n');
-		break;
+		// Validate Gia Sach khi chỉnh sửa
+	{
+		long price = 0;
+		do {
+			printf("Nhap Gia Sach moi: ");
+			if (scanf_s("%ld", &price) != 1) {
+				while (getchar() != '\n');
+				printf("Nhap khong hop le. Vui long nhap lai.\n");
+				continue;
+			}
+			while (getchar() != '\n');
+			if (price < 0) {
+				printf("Gia sach phai lon hon hoac bang0. Vui long nhap lai.\n");
+			}
+			else {
+				gia_sach_arr[index] = price;
+				break;
+			}
+		} while (true);
+	}
+	break;
 	case 7:
-		printf("Nhap So Quyen moi: ");
-		scanf_s("%d", &so_quyen_arr[index]);
-		while (getchar() != '\n');
-		break;
+	{
+		int copies = 0;
+		do {
+			printf("Nhap So Quyen moi: ");
+			if (scanf_s("%d", &copies) != 1) {
+				while (getchar() != '\n');
+				printf("Nhap khong hop le. Vui long nhap lai.\n");
+				continue;
+			}
+			while (getchar() != '\n');
+			if (copies < 0) {
+				printf("So quyen phai la so nguyen khong am. Vui long nhap lai.\n");
+			}
+			else {
+				so_quyen_arr[index] = copies;
+				break;
+			}
+		} while (true);
+	}
+	break;
 	case 0:
 		printf("--> Huy bo chinh sua.\n");
 		return;
@@ -259,7 +359,7 @@ void chinh_sua_sach() {
 }
 
 /**
- * @brief Xóa thông tin sách (Chức năng2d).
+ * @brief Xóa thông tin sách (Chức năng 2d).
  * @param None
  * @return void
  */
@@ -297,7 +397,7 @@ void xoa_sach() {
 }
 
 /**
- * @brief Tìm kiếm sách theo ISBN (Chức năng2e).
+ * @brief Tìm kiếm sách theo ISBN (Chức năng 2e).
  * @param None
  * @return void
  */
@@ -328,7 +428,7 @@ void tim_sach_theo_isbn() {
 }
 
 /**
- * @brief Tìm kiếm sách theo tên sách (Chức năng2f).
+ * @brief Tìm kiếm sách theo tên sách (Chức năng 2f).
  * @param None
  * @return void
  */

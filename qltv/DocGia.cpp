@@ -155,16 +155,27 @@ void them_doc_gia() {
 	scanf_s(" %49[^\n]", dia_chi_arr[i], (unsigned)sizeof(dia_chi_arr[i]));
 	while (getchar() != '\n');
 
-	// Ngay Lap The with validation
-	do {
-		printf("Nhap Ngay Lap The (DD/MM/YYYY): ");
-		scanf_s("%10s", ngay_lap_the_arr[i], (unsigned)sizeof(ngay_lap_the_arr[i]));
-		while (getchar() != '\n');
-		if (!kiem_tra_ngay(ngay_lap_the_arr[i])) {
-			printf("Dinh dang ngay khong hop le. Vui long nhap lai theo DD/MM/YYYY.\n");
-		}
-		else break;
-	} while (true);
+	// Ngay Lap The with validation - Tự động lấy ngày hiện tại hoặc nhập thủ công
+	char lua_chon_ngay;
+	printf("Su dung ngay hien tai cho Ngay Lap The? (Y/N): ");
+	scanf_s(" %c", &lua_chon_ngay, 1);
+	while (getchar() != '\n');
+
+	if (lua_chon_ngay == 'Y' || lua_chon_ngay == 'y') {
+		lay_ngay_hien_tai(ngay_lap_the_arr[i], sizeof(ngay_lap_the_arr[i]));
+		printf("Ngay Lap The (Tu dong): %s\n", ngay_lap_the_arr[i]);
+	}
+	else {
+		do {
+			printf("Nhap Ngay Lap The (DD/MM/YYYY): ");
+			scanf_s("%10s", ngay_lap_the_arr[i], (unsigned)sizeof(ngay_lap_the_arr[i]));
+			while (getchar() != '\n');
+			if (!kiem_tra_ngay(ngay_lap_the_arr[i])) {
+				printf("Dinh dang ngay khong hop le. Vui long nhap lai theo DD/MM/YYYY.\n");
+			}
+			else break;
+		} while (true);
+	}
 
 	// Tự động tính ngày hết hạn dựa trên ngày lập thẻ
 	tinh_ngay_het_han(ngay_lap_the_arr[i], ngay_het_han_arr[i], sizeof(ngay_het_han_arr[i]));

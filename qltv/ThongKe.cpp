@@ -2,6 +2,7 @@
 #include "DocGia.h"
 #include "Sach.h"
 #include "PhieuMuon.h"
+#include "Helper.h"
 #include <cstdio>
 #include <cstring> // Cho strcmp, strcpy_s
 #include <stdbool.h>
@@ -137,10 +138,11 @@ extern int so_sanh_ngay(const char* date1, const char* date2);
 void thong_ke_doc_gia_tre_han() {
 	printf("\n--- THONG KE DOC GIA BI TRE HAN ---\n");
 
-	// Để kiểm tra trễ hạn, ta cần ngày hiện tại (định dạng DD/MM/YYYY)
-	char ngay_hien_tai[11] = "30/10/2025"; // GIẢ LẬP NGÀY HIỆN TẠI
+	// Lấy ngày hiện tại sử dụng hàm lay_ngay_hien_tai()
+	char ngay_hien_tai[11];
+	lay_ngay_hien_tai(ngay_hien_tai, sizeof(ngay_hien_tai));
 
-	printf("Ngay Hien Tai (Gia lap): %s\n", ngay_hien_tai);
+	printf("Ngay Hien Tai: %s\n", ngay_hien_tai);
 	printf("\n%-10s | %-10s | %-20s | %-12s | %-12s\n", "Ma Phieu", "Ma DG", "Ho Ten", "Ngay Du Kien", "Trang Thai");
 	printf("--------------------------------------------------------------------------\n");
 

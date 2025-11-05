@@ -235,12 +235,8 @@ void lap_phieu_tra() {
 	char ngay_tra_tt[11] = { 0 };
 	// Ngày trả thực tế (DD/MM/YYYY) với xác thực
 	do {
-		// Get current date
-		time_t t = time(NULL);
-		struct tm lt;
-		localtime_s(&lt, &t);
 		char ngay_hien_tai[11];
-		strftime(ngay_hien_tai, sizeof(ngay_hien_tai), "%d/%m/%Y", &lt);
+		lay_ngay_hien_tai(ngay_hien_tai, sizeof(ngay_hien_tai));
 
 		printf("Nhap Ngay Tra Thuc Te (DD/MM/YYYY): ");
 		scanf_s("%10s", ngay_tra_tt, (unsigned)sizeof(ngay_tra_tt));
@@ -306,7 +302,6 @@ void xem_danh_sach_phieu_muon() {
 	printf("-------------------------------------------------------------------------------------------------------------\n");
 
 	for (int i = 0; i < so_luong_phieu; i++) {
-		// Build ISBN list string
 		char isbns[MAX_SACH_MUON * 16] = "";
 		for (int j = 0; j < so_sach_muon_arr[i]; j++) {
 			if (j > 0) {

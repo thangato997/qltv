@@ -108,11 +108,11 @@ long int tinh_so_ngay_tre_han(const char* date_str1, const char* date_str2) {
 }
 
 /**
-* @brief Generate a random ISBN in the format "XXX-XXXXXXXXX".
+* @brief Generate a random ISBN in the format "XXX-XXXXXXXXXX".
 * @return A dynamically allocated string containing the ISBN. Caller must free it.
 */
 char* generate_random_isbn() {
-	const size_t SIZE = 14; // 3 digits + '-' + 9 digits + '\0' = 14
+	const size_t SIZE = 15; // "XXX-XXXXXXXXXX\0"
 	char* isbn = (char*)malloc(SIZE);
 	if (!isbn) return NULL;
 
@@ -127,10 +127,25 @@ char* generate_random_isbn() {
 		isbn[i] = (char)('0' + (rand() % 10));
 	}
 	isbn[3] = '-';
-	// Fill next 9 digits
-	for (int i = 0; i < 9; ++i) {
+	// Fill next 10 digits
+	for (int i = 0; i < 10; ++i) {
 		isbn[4 + i] = (char)('0' + (rand() % 10));
 	}
-	isbn[13] = '\0';
+	isbn[14] = '\0';
 	return isbn;
+}
+
+void lay_ngay_hien_tai(char* buf, size_t bufsize) {
+	if (!buf || bufsize == 0) return;
+	time_t t = time(NULL);
+	tm lt;
+	localtime_s(&lt, &t);
+	strftime(buf, bufsize, "%d/%m/%Y", &lt);
+}
+
+int lay_nam_hien_tai() {
+	time_t t = time(NULL);
+	tm lt;
+	localtime_s(&lt, &t);
+	return lt.tm_year + 1900;
 }
