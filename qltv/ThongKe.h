@@ -2,11 +2,8 @@
 #define THONGKE_H
 
 #include <stdio.h>
-#include "PhieuMuon.h" 
 
 #define MAX_THE_LOAI_KHAC 10
-extern char ma_phieu_arr[MAX_PHIEU][10];
-extern int da_tra_arr[MAX_PHIEU];
 
 // Nguyên mẫu hàm Thống kê
 void thong_ke_so_luong_sach();

@@ -4,8 +4,16 @@
 #include "PhieuMuon.h"
 #include "Helper.h"
 #include <cstdio>
-#include <cstring> // Cho strcmp, strcpy_s
+#include <cstring>
 #include <stdbool.h>
+
+// Khai báo extern
+extern DocGia danh_sach_doc_gia[MAX_DOC_GIA];
+extern int so_luong_doc_gia;
+extern Sach danh_sach_sach[MAX_SACH];
+extern int so_luong_sach;
+extern PhieuMuon danh_sach_phieu[MAX_PHIEU];
+extern int so_luong_phieu;
 
 /**
  * @brief Thống kê số lượng sách trong thư viện (Chức năng 5a).
@@ -37,7 +45,7 @@ void thong_ke_sach_theo_the_loai() {
 		bool da_ton_tai = false;
 		// Kiểm tra xem thể loại đã có trong danh sách thống kê chưa
 		for (int j = 0; j < so_luong_tl_duy_nhat; j++) {
-			if (strcmp(the_loai_arr[i], the_loai_duy_nhat[j]) == 0) {
+			if (strcmp(danh_sach_sach[i].the_loai, the_loai_duy_nhat[j]) == 0) {
 				so_luong_theo_tl[j]++;
 				da_ton_tai = true;
 				break;
@@ -46,7 +54,8 @@ void thong_ke_sach_theo_the_loai() {
 
 		// Nếu là thể loại mới
 		if (!da_ton_tai && so_luong_tl_duy_nhat < MAX_THE_LOAI_KHAC) {
-			strcpy_s(the_loai_duy_nhat[so_luong_tl_duy_nhat], sizeof(the_loai_duy_nhat[so_luong_tl_duy_nhat]), the_loai_arr[i]);
+			strcpy_s(the_loai_duy_nhat[so_luong_tl_duy_nhat], sizeof(the_loai_duy_nhat[so_luong_tl_duy_nhat]), 
+				danh_sach_sach[i].the_loai);
 			so_luong_theo_tl[so_luong_tl_duy_nhat] = 1;
 			so_luong_tl_duy_nhat++;
 		}
@@ -87,10 +96,10 @@ void thong_ke_doc_gia_theo_gioi_tinh() {
 	int nu_count = 0;
 
 	for (int i = 0; i < so_luong_doc_gia; i++) {
-		if (strcmp(gioi_tinh_arr[i], "Nam") == 0) {
+		if (strcmp(danh_sach_doc_gia[i].gioi_tinh, "Nam") == 0) {
 			nam_count++;
 		}
-		else if (strcmp(gioi_tinh_arr[i], "Nu") == 0) {
+		else if (strcmp(danh_sach_doc_gia[i].gioi_tinh, "Nu") == 0) {
 			nu_count++;
 		}
 	}
@@ -112,8 +121,8 @@ void thong_ke_so_sach_dang_muon() {
 	int tong_sach_dang_muon = 0;
 
 	for (int i = 0; i < so_luong_phieu; i++) {
-		if (da_tra_arr[i] == 0) { // Nếu chưa trả
-			tong_sach_dang_muon += so_sach_muon_arr[i];
+		if (danh_sach_phieu[i].da_tra == 0) { // Nếu chưa trả
+			tong_sach_dang_muon += danh_sach_phieu[i].so_sach_muon;
 		}
 	}
 
@@ -139,25 +148,25 @@ void thong_ke_doc_gia_tre_han() {
 	bool co_tre_han = false;
 
 	for (int i = 0; i < so_luong_phieu; i++) {
-		// Chỉ xét các phiếu chưa trả (da_tra_arr[i] == 0)
-		if (da_tra_arr[i] == 0) {
+		// Chỉ xét các phiếu chưa trả
+		if (danh_sach_phieu[i].da_tra == 0) {
 			// So sánh Ngay Hien Tai với Ngay Tra Du Kien
-			if (so_sanh_ngay(ngay_hien_tai, ngay_tra_du_kien_arr[i]) > 0) {
+			if (so_sanh_ngay(ngay_hien_tai, danh_sach_phieu[i].ngay_tra_du_kien) > 0) {
 				// Đã quá hạn: tìm tên độc giả theo mã độc giả trong phiếu
-				const char* ma_dg_phieu = ma_doc_gia_phieu_arr[i];
+				const char* ma_dg_phieu = danh_sach_phieu[i].ma_doc_gia;
 				const char* ho_ten = "(Khong ro)";
 				for (int j = 0; j < so_luong_doc_gia; j++) {
-					if (strcmp(ma_doc_gia_arr[j], ma_dg_phieu) == 0) {
-						ho_ten = ho_ten_arr[j];
+					if (strcmp(danh_sach_doc_gia[j].ma_doc_gia, ma_dg_phieu) == 0) {
+						ho_ten = danh_sach_doc_gia[j].ho_ten;
 						break;
 					}
 				}
 
 				printf("%-10s | %-10s | %-20s | %-12s | %-12s\n",
-					ma_phieu_arr[i],
-					ma_doc_gia_phieu_arr[i],
+					danh_sach_phieu[i].ma_phieu,
+					danh_sach_phieu[i].ma_doc_gia,
 					ho_ten,
-					ngay_tra_du_kien_arr[i],
+					danh_sach_phieu[i].ngay_tra_du_kien,
 					"TRE HAN");
 				co_tre_han = true;
 			}

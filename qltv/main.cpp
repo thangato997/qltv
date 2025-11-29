@@ -1,9 +1,18 @@
 #include "Menu.h"
 #include "PhieuMuon.h"
+#include "DocGia.h"
+#include "Sach.h"
 #include <cstdio>
 #include <cstdlib> 
 
 int main() {
+	// Đọc dữ liệu từ file khi khởi động chương trình
+	printf("=== KHOI TAO HE THONG ===\n");
+	doc_du_lieu_doc_gia("docgia.txt");
+	doc_du_lieu_sach("sach.txt");
+	doc_du_lieu_phieu("phieumuon.txt");
+	printf("=========================\n\n");
+
 	int lua_chon_chinh;
 
 	do {
@@ -38,6 +47,12 @@ int main() {
 			menu_thong_ke();
 			break;
 		case 0:
+			// Lưu dữ liệu trước khi thoát
+			printf("\n=== LUU DU LIEU ===\n");
+			ghi_du_lieu_doc_gia("docgia.txt");
+			ghi_du_lieu_sach("sach.txt");
+			ghi_du_lieu_phieu("phieumuon.txt");
+			printf("===================\n");
 			printf("\n--- CAM ON BAN DA SU DUNG CHUONG TRINH. TAM BIET! ---\n");
 			break;
 		default:

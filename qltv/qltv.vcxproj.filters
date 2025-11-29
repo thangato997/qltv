@@ -57,4 +57,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="docgia.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="phieumuon.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sach.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

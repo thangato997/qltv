@@ -1,0 +1,4 @@
+978-1234567890|Lap trinh C++|Nguyen Van Dung|NXB Giao Duc|2015|Khoa hoc may tinh|150000|10
+978-0987654321|CSDL va Thuc hanh|Tran Minh|NXB KHKT|2018|Khoa hoc may tinh|200000|5
+978-1112131415|Giai thuat|Le Thi Hoa|NXB Tre|2012|Khoa hoc may tinh|180000|7
+818-1657027676|12|12|12|1234|12|0|0

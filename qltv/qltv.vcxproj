@@ -35,6 +35,11 @@
     <ClCompile Include="Sach.cpp" />
     <ClCompile Include="ThongKe.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="docgia.txt" />
+    <Text Include="phieumuon.txt" />
+    <Text Include="sach.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
