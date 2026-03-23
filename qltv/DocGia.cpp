@@ -230,6 +230,7 @@ void them_doc_gia() {
 	printf("Nhap Ho Ten: ");
 	scanf_s(" %49[^\n]", dg->ho_ten, (unsigned)sizeof(dg->ho_ten));
 	while (getchar() != '\n');
+	loai_bo_ky_tu_pipe(dg->ho_ten);
 
 	do {
 		printf("Nhap Ngay Sinh (DD/MM/YYYY): ");
@@ -248,10 +249,12 @@ void them_doc_gia() {
 	printf("Nhap Email: ");
 	scanf_s("%49s", dg->email, (unsigned)sizeof(dg->email));
 	while (getchar() != '\n');
+	loai_bo_ky_tu_pipe(dg->email);
 
 	printf("Nhap Dia Chi: ");
 	scanf_s(" %49[^\n]", dg->dia_chi, (unsigned)sizeof(dg->dia_chi));
 	while (getchar() != '\n');
+	loai_bo_ky_tu_pipe(dg->dia_chi);
 
 	char lua_chon_ngay;
 	printf("Su dung ngay hien tai cho Ngay Lap The? (Y/N): ");
@@ -343,6 +346,7 @@ void chinh_sua_doc_gia() {
 			printf("Nhap Ho Ten moi: ");
 			scanf_s(" %49[^\n]", temp.ho_ten, (unsigned)sizeof(temp.ho_ten));
 			while (getchar() != '\n');
+			loai_bo_ky_tu_pipe(temp.ho_ten);
 			break;
 		case 2:
 			do {
@@ -364,11 +368,13 @@ void chinh_sua_doc_gia() {
 			printf("Nhap Email moi: ");
 			scanf_s("%49s", temp.email, (unsigned)sizeof(temp.email));
 			while (getchar() != '\n');
+			loai_bo_ky_tu_pipe(temp.email);
 			break;
 		case 5:
 			printf("Nhap Dia Chi moi: ");
 			scanf_s(" %49[^\n]", temp.dia_chi, (unsigned)sizeof(temp.dia_chi));
 			while (getchar() != '\n');
+			loai_bo_ky_tu_pipe(temp.dia_chi);
 			break;
 		case 6:
 			do {
@@ -492,7 +498,7 @@ void tim_doc_gia_theo_ho_ten() {
 		DocGia* dg = &danh_sach_doc_gia[i];
 		char* s1 = chuyen_sang_chu_thuong(dg->ho_ten);
 		char* s2 = chuyen_sang_chu_thuong(ho_ten_can_tim);
-		if (strstr(s1, s2) != NULL) {
+		if (s1 != NULL && s2 != NULL && strstr(s1, s2) != NULL) {
 			printf("%-6s | %-20s | %-12s | %-11s | %-5s | %-18s | %-11s | %-11s\n",
 				dg->ma_doc_gia, dg->ho_ten, dg->cmnd, dg->ngay_sinh, dg->gioi_tinh,
 				dg->email, dg->ngay_lap_the, dg->ngay_het_han);

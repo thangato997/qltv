@@ -91,10 +91,15 @@ bool doc_du_lieu_phieu(const char* filename) {
 					}
 					break;
 				case 5: // da_tra
-					p->da_tra = atoi(token);
+					p->da_tra = (atoi(token) != 0) ? 1 : 0;
 					break;
 				case 6: // so_sach_muon
-					p->so_sach_muon = atoi(token);
+					{
+						int n = atoi(token);
+						if (n < 0) n = 0;
+						if (n > MAX_SACH_MUON) n = MAX_SACH_MUON;
+						p->so_sach_muon = n;
+					}
 					break;
 			}
 			field++;
@@ -492,7 +497,8 @@ void xem_danh_sach_phieu_muon() {
 	for (int i = 0; i < so_luong_phieu; i++) {
 		PhieuMuon* p = &danh_sach_phieu[i];
 		
-		char isbns[MAX_SACH_MUON * 16] = "";
+		/* Per entry: up to 14 ISBN chars + 2-char ", " separator; one extra byte for null terminator */
+		char isbns[(sizeof(p->sach_muon[0].isbn) - 1 + 2) * MAX_SACH_MUON + 1] = "";
 		for (int j = 0; j < p->so_sach_muon; j++) {
 			if (j > 0) {
 				strcat_s(isbns, sizeof(isbns), ", ");
