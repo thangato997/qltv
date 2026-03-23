@@ -315,7 +315,7 @@ void lap_phieu_muon() {
 				continue;
 			}
 
-			strcpy_s(phieu->sach_muon[so_sach_da_them].isbn, isbn_temp);
+			strcpy_s(phieu->sach_muon[so_sach_da_them].isbn, sizeof(phieu->sach_muon[so_sach_da_them].isbn), isbn_temp);
 			phieu->sach_muon[so_sach_da_them].bi_mat = 0;
 			so_sach_da_them++;
 
@@ -331,7 +331,7 @@ void lap_phieu_muon() {
 		}
 
 		phieu->so_sach_muon = so_sach_da_them;
-		strcpy_s(phieu->ngay_tra_thuc_te, "");
+		strcpy_s(phieu->ngay_tra_thuc_te, sizeof(phieu->ngay_tra_thuc_te), "");
 		phieu->da_tra = 0;
 		so_luong_phieu++;
 
@@ -415,7 +415,7 @@ void lap_phieu_tra() {
 	}
 
 	// B3: Xử lý trả sách
-	strcpy_s(phieu->ngay_tra_thuc_te, ngay_tra_tt);
+	strcpy_s(phieu->ngay_tra_thuc_te, sizeof(phieu->ngay_tra_thuc_te), ngay_tra_tt);
 	phieu->da_tra = 1;
 
 	printf("\nDa cap nhat phieu tra %s.\n", ma_phieu_temp);

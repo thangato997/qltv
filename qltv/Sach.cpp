@@ -220,7 +220,7 @@ void them_sach() {
 	int i = so_luong_sach;
 	Sach* s = &danh_sach_sach[i];
 
-	strcpy_s(s->isbn, isbn_moi);
+	strcpy_s(s->isbn, sizeof(s->isbn), isbn_moi);
 
 	printf("Nhap Ten Sach: ");
 	scanf_s(" %49[^\n]", s->ten_sach, (unsigned)sizeof(s->ten_sach));

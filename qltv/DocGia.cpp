@@ -223,7 +223,7 @@ void them_doc_gia() {
 	int i = so_luong_doc_gia;
 	DocGia* dg = &danh_sach_doc_gia[i];
 
-	strcpy_s(dg->cmnd, cmnd_moi);
+	strcpy_s(dg->cmnd, sizeof(dg->cmnd), cmnd_moi);
 	sprintf_s(dg->ma_doc_gia, sizeof(dg->ma_doc_gia), "DG%03d", i + 1);
 	printf("Ma Doc Gia (Tu dong tao): %s\n", dg->ma_doc_gia);
 
@@ -492,7 +492,7 @@ void tim_doc_gia_theo_ho_ten() {
 		DocGia* dg = &danh_sach_doc_gia[i];
 		char* s1 = chuyen_sang_chu_thuong(dg->ho_ten);
 		char* s2 = chuyen_sang_chu_thuong(ho_ten_can_tim);
-		if (strstr(s1, s2) != NULL) {
+		if (s1 != NULL && s2 != NULL && strstr(s1, s2) != NULL) {
 			printf("%-6s | %-20s | %-12s | %-11s | %-5s | %-18s | %-11s | %-11s\n",
 				dg->ma_doc_gia, dg->ho_ten, dg->cmnd, dg->ngay_sinh, dg->gioi_tinh,
 				dg->email, dg->ngay_lap_the, dg->ngay_het_han);
