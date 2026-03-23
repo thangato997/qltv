@@ -5,6 +5,19 @@
 #include <cctype>
 #include <ctime>
 
+void loai_bo_ky_tu_pipe(char* s) {
+	if (s == NULL) return;
+	char* src = s;
+	char* dst = s;
+	while (*src) {
+		if (*src != '|') {
+			*dst++ = *src;
+		}
+		src++;
+	}
+	*dst = '\0';
+}
+
 char* chuyen_sang_chu_thuong(const char* s) {
 	if (s == NULL) return NULL;
 	size_t len = strlen(s);

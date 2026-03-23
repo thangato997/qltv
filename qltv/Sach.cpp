@@ -225,14 +225,17 @@ void them_sach() {
 	printf("Nhap Ten Sach: ");
 	scanf_s(" %49[^\n]", s->ten_sach, (unsigned)sizeof(s->ten_sach));
 	while (getchar() != '\n');
+	loai_bo_ky_tu_pipe(s->ten_sach);
 
 	printf("Nhap Tac Gia: ");
 	scanf_s(" %49[^\n]", s->tac_gia, (unsigned)sizeof(s->tac_gia));
 	while (getchar() != '\n');
+	loai_bo_ky_tu_pipe(s->tac_gia);
 
 	printf("Nhap Nha Xuat Ban: ");
 	scanf_s(" %49[^\n]", s->nxb, (unsigned)sizeof(s->nxb));
 	while (getchar() != '\n');
+	loai_bo_ky_tu_pipe(s->nxb);
 
 	int year = 0;
 	int current_year = lay_nam_hien_tai();
@@ -256,6 +259,7 @@ void them_sach() {
 	printf("Nhap The Loai: ");
 	scanf_s(" %49[^\n]", s->the_loai, (unsigned)sizeof(s->the_loai));
 	while (getchar() != '\n');
+	loai_bo_ky_tu_pipe(s->the_loai);
 
 	long price = 0;
 	do {
@@ -342,16 +346,19 @@ void chinh_sua_sach() {
 		printf("Nhap Ten Sach moi: ");
 		scanf_s(" %49[^\n]", s->ten_sach, (unsigned)sizeof(s->ten_sach));
 		while (getchar() != '\n');
+		loai_bo_ky_tu_pipe(s->ten_sach);
 		break;
 	case 2:
 		printf("Nhap Tac Gia moi: ");
 		scanf_s(" %49[^\n]", s->tac_gia, (unsigned)sizeof(s->tac_gia));
 		while (getchar() != '\n');
+		loai_bo_ky_tu_pipe(s->tac_gia);
 		break;
 	case 3:
 		printf("Nhap Nha Xuat Ban moi: ");
 		scanf_s(" %49[^\n]", s->nxb, (unsigned)sizeof(s->nxb));
 		while (getchar() != '\n');
+		loai_bo_ky_tu_pipe(s->nxb);
 		break;
 	case 4:
 	{
@@ -379,6 +386,7 @@ void chinh_sua_sach() {
 		printf("Nhap The Loai moi: ");
 		scanf_s(" %49[^\n]", s->the_loai, (unsigned)sizeof(s->the_loai));
 		while (getchar() != '\n');
+		loai_bo_ky_tu_pipe(s->the_loai);
 		break;
 	case 6:
 	{

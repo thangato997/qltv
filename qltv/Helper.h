@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 
+void loai_bo_ky_tu_pipe(char* s);
 char* chuyen_sang_chu_thuong(const char* s);
 int tim_vi_tri_doc_gia(const char* cmnd_can_tim);
 void tinh_ngay_het_han(const char* ngay_lap, char* ngay_het_han, size_t buffer_size);
